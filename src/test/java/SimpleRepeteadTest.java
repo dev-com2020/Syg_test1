@@ -13,6 +13,9 @@ public class SimpleRepeteadTest {
     @DisplayName("Repeat!")
     void customDisplayName(TestInfo testInfo){
         System.out.println(testInfo.getDisplayName());
+        System.out.println(testInfo.getTestClass());
+        System.out.println(testInfo.getTestMethod());
+
     }
 
     @RepeatedTest(value = 2, name= RepeatedTest.LONG_DISPLAY_NAME)
