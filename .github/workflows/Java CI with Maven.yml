@@ -1,11 +1,7 @@
 name: Java CI with Maven
 
 on:
-  push:
-    branches: [ robocze ]
-  pull_request:
-    branches: [ robocze ]
-
+  [push]
 jobs:
   build:
     runs-on: ubuntu-latest
