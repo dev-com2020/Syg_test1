@@ -26,7 +26,7 @@ class LifecycleJunit5Test {
 
     @AfterEach
     void teardown(){
-        System.out.println("Teardown EACH TEST in the class");
+        System.out.println("Teardown EACH TEST in the class   ");
     }
 
     @AfterAll
