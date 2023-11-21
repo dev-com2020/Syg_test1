@@ -26,12 +26,12 @@ class LifecycleJunit5Test {
 
     @AfterEach
     void teardown(){
-        System.out.println("Teardown EACH TEST in the class");
+        System.out.println("Teardown EACH TEST in the class   ");
     }
 
     @AfterAll
     static void teardownAll(){
-        System.out.println("Teardown ALL TESTS in the class");
+        System.out.println("Teardown ALL TESTS in the class   ");
     }
 
 }
