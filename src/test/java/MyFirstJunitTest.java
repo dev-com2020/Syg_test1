@@ -9,6 +9,7 @@ public class MyFirstJunitTest {
         System.out.println(message);
         assertEquals(2, 1 + 1, message);
     }
+
     @Test
     void standardAssertions(){
         assertEquals(2,2);
