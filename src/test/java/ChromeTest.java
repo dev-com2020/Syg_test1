@@ -11,6 +11,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,10 +29,26 @@ public class ChromeTest {
 
     @BeforeEach
     void setupChromeDriver() {
+        Map<String, Object> deviceMetrics = new HashMap<>();
+        deviceMetrics.put("width", 411);
+        deviceMetrics.put("height", 823);
+        deviceMetrics.put("pixelRatio", 3.0);
+
+        Map<String, Object> mobileEmulation = new HashMap<>();
+        mobileEmulation.put("deviceMetrics", deviceMetrics);
+        mobileEmulation.put("userAgent", "Mozilla/5.0 (Linux; Android 8.0.0;" +
+                "Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) " +
+                "Chrome/67.0.3396.99 Mobile Safari/537.36");
+
+
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.setHeadless(true);
+        chromeOptions.setHeadless(false);
+        chromeOptions.setExperimentalOption("mobileEmulation",mobileEmulation);
+
         driver = new ChromeDriver(chromeOptions);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+
     }
 
     @Test
