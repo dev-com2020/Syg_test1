@@ -4,19 +4,13 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -43,16 +37,20 @@ public class ChromeTest {
         mobileEmulation.put("userAgent", "Mozilla/5.0 (Windows NT 6.1; WOW64) " +
                 "AppleWebKit/537.36 (KHTML, like Gecko) " +
                 "Chrome/47.0.2526.111 Safari/537.36");
+//        Cookie cookies = new Cookie("PRIVACY_POLICY", "TRUE", "/", null);
 
 
-        ChromeOptions chromeOptions = new ChromeOptions();
+    //        chromeOptions.addArguments("--disable-notifications");
+
+        chromeOptions = new ChromeOptions();
         chromeOptions.setHeadless(true);
+        Map prefs = new HashMap();
+        prefs.put("profile.default_content_settings.cookies", 2);
+        chromeOptions.setExperimentalOption("prefs",prefs);
         chromeOptions.setExperimentalOption("mobileEmulation",mobileEmulation);
 
         driver = new ChromeDriver(chromeOptions);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
-
     }
 
     @Test
@@ -69,13 +67,13 @@ public class ChromeTest {
 //        WebDriverWait wait = new WebDriverWait(driver, 10);
 //        WebElement cookie = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='stopkaCookiePolicy']/div/div[2]/div[1]/span")));
 
-//        Thread.sleep(2);
-//        File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-//        try {
-//            FileUtils.copyFile(scrFile, new File("src/main/resources/screen1.jpg"));
-//        } catch (IOException e){
-//            e.printStackTrace();
-//        }
+        Thread.sleep(2);
+        File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(scrFile, new File("src/main/resources/screen1.jpg"));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
 
@@ -118,9 +116,27 @@ public class ChromeTest {
     public void elementH3Finder(){
         driver.get("https://rjps.mrips.gov.pl/RJPS/WJ/start.do?podkategorie=21&stronaListy=1&sortowanie=0&liczbaPozycjiLista=20&wersja=1&widocznyPanel=lista");
         List<WebElement> headers = driver.findElements(By.tagName("h3"));
-        boolean found = headers.stream().anyMatch(header -> header.getText().equals("GOPS Gnojnik"));
+        boolean found = headers.stream().anyMatch(header -> header.getText().equalsIgnoreCase("GOPS Gnojnik"));
         assertTrue(found, "GOPS Gnojnik nie został znaleziony");
         }
+
+    @Test
+    @DisplayName("Wyszukiwanie i kliknięcie w GOPS Gnojnik")
+    public void elementH3Clicker() throws InterruptedException {
+        driver.get("https://rjps.mrips.gov.pl/RJPS/WJ/start.do?podkategorie=21&stronaListy=1&sortowanie=0&liczbaPozycjiLista=20&wersja=1&widocznyPanel=lista");
+        List<WebElement> headers = driver.findElements(By.tagName("h3"));
+        WebElement found = headers.stream().filter(item->item.getText().equalsIgnoreCase("gops gnojnik")).findAny().get();
+        found.click();
+        Thread.sleep(1000);
+        assertEquals("RJPS - GOPS Gnojnik",driver.getTitle());
+
+//        File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+//        try {
+//            FileUtils.copyFile(scrFile, new File("src/main/resources/gops1.jpg"));
+//        } catch (IOException e){
+//            e.printStackTrace();
+//        }
+    }
 
 //    @AfterEach
 //    public void tearDown(){
