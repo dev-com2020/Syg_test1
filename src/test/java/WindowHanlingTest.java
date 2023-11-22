@@ -43,7 +43,7 @@ public class WindowHanlingTest {
 
 
         chromeOptions = new ChromeOptions();
-        chromeOptions.setHeadless(true);
+        chromeOptions.setHeadless(false);
         Map prefs = new HashMap();
         prefs.put("profile.default_content_settings.cookies", 2);
         chromeOptions.setExperimentalOption("prefs",prefs);
@@ -51,30 +51,26 @@ public class WindowHanlingTest {
 
         driver = new ChromeDriver(chromeOptions);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.get("http://guidebook.seleniumacademy.com/Window.html");
     }
 
     @Test
-    void search() throws InterruptedException {
-        driver.get("https://rjps.mrips.gov.pl/RJPS/WJ/start.do?wersja=1");
-        WebElement cookie = driver.findElement(By.xpath("//*[@id='stopkaCookiePolicy']/div/div[2]/div[1]/span"));
-        cookie.click();
-        WebElement wyszSczegolowe = driver.findElement(By.className("wyszukiwanie-szczegolowe"));
-        wyszSczegolowe.click();
-        WebElement checkbox = driver.findElement(By.id("label-4-21"));
-        checkbox.click();
-        WebElement szukaj = driver.findElement(By.xpath("//*[@id='podkategorie']/div[3]/button[2]"));
-        szukaj.click();
-        Thread.sleep(2);
-        File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-        try {
-            FileUtils.copyFile(scrFile, new File("src/main/resources/screen1.jpg"));
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+    void handleWindow(){
+        String firstWindow = driver.getWindowHandle();
+        System.out.println("First Window Handle: " + firstWindow);
+        WebElement link = driver.findElement(By.linkText("Google Search"));
+        link.click();
+
+        String secondWindow = driver.getWindowHandle();
+        System.out.println("Second Window Handel: " + secondWindow);
+        System.out.println("Number of window handless so far: " +
+                driver.getWindowHandles().size());
+        driver.switchTo().window(firstWindow);
+
+        driver.navigate().back();
+        driver.navigate().forward();
+        driver.navigate().refresh();
+
     }
-
-
-
-
 
 }
