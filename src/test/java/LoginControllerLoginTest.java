@@ -28,4 +28,9 @@ class LoginControllerLoginTest {
         verifyNoMoreInteractions(loginService);
     }
 
+    @Test
+    void testLoginError(){
+        assertEquals("ERROR", loginController.login(null));
+    }
+
 }
