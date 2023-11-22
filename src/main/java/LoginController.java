@@ -16,9 +16,9 @@ public class LoginController {
                 return "ERROR!";
             }
         }
-        public void logout(UserForm userForm){
-            System.out.println("LoginController.logout " + userForm);
-            loginService.logout(userForm);
-    }
+//        public void logout(UserForm userForm){
+//            System.out.println("LoginController.logout " + userForm);
+//            loginService.logout(userForm);
+//    }
 }
 
