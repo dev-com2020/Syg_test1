@@ -14,7 +14,9 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -79,6 +81,17 @@ public class ChromeTest {
         System.out.println("Total links: " + links.size());
         long count = links.stream().filter(WebElement::isDisplayed).count();
         System.out.println("Total link visible: " + count);
+    }
+
+    @Test
+    public void imgAltTest(){
+        driver.get("https://rjps.mrips.gov.pl/RJPS/WJ/start.do?wersja=1");
+        List<WebElement> images = driver.findElements(By.tagName("img"));
+        System.out.println("Total img: " + images.size());
+        List<WebElement> imagesWithOutAlt = images.stream()
+                .filter(item -> item.getAttribute("alt") == "")
+                        .collect(Collectors.toList());
+        System.out.println("Total img without alt atrr " + imagesWithOutAlt);
     }
 
 //    @AfterEach
