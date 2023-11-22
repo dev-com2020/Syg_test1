@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ChromeTest {
 
@@ -33,21 +34,20 @@ public class ChromeTest {
     @BeforeEach
     void setupChromeDriver() {
         Map<String, Object> deviceMetrics = new HashMap<>();
-        deviceMetrics.put("width", 411);
+        deviceMetrics.put("width", 1411);
         deviceMetrics.put("height", 823);
-        deviceMetrics.put("pixelRatio", 3.0);
+        deviceMetrics.put("pixelRatio", 1.0);
 
         Map<String, Object> mobileEmulation = new HashMap<>();
         mobileEmulation.put("deviceMetrics", deviceMetrics);
-        mobileEmulation.put("userAgent", "Mozilla/5.0 " +
-                "(iPhone14,3; U; CPU iPhone OS 15_0 like Mac OS X) " +
-                "AppleWebKit/602.1.50 (KHTML, like Gecko) " +
-                "Version/10.0 Mobile/19A346 Safari/602.1");
+        mobileEmulation.put("userAgent", "Mozilla/5.0 (Windows NT 6.1; WOW64) " +
+                "AppleWebKit/537.36 (KHTML, like Gecko) " +
+                "Chrome/47.0.2526.111 Safari/537.36");
 
 
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.setHeadless(false);
-//        chromeOptions.setExperimentalOption("mobileEmulation",mobileEmulation);
+        chromeOptions.setHeadless(true);
+        chromeOptions.setExperimentalOption("mobileEmulation",mobileEmulation);
 
         driver = new ChromeDriver(chromeOptions);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -93,11 +93,34 @@ public class ChromeTest {
         driver.get("https://rjps.mrips.gov.pl/RJPS/WJ/start.do?wersja=1");
         List<WebElement> images = driver.findElements(By.tagName("img"));
         System.out.println("Total img: " + images.size());
-        List<WebElement> imagesWithOutAlt = images.stream()
-                .filter(item -> item.getAttribute("alt") == "")
-                        .collect(Collectors.toList());
-        System.out.println("Total img without alt atrr " + imagesWithOutAlt);
+        int imagesWithoutAltCount = 0;
+        for (WebElement image : images) {
+            String altText = image.getAttribute("alt");
+            if (altText == null || altText.isEmpty()) {
+                imagesWithoutAltCount++;
+            }
+        }
+        System.out.println("Total img without alt atrr " + imagesWithoutAltCount);
     }
+
+    @Test
+    public void h3finder(){
+        driver.get("https://rjps.mrips.gov.pl/RJPS/WJ/start.do?podkategorie=21&stronaListy=1&sortowanie=0&liczbaPozycjiLista=20&wersja=1&widocznyPanel=lista");
+        List<WebElement> headers = driver.findElements(By.tagName("h3"));
+        System.out.println("Total h3: " + headers.size());
+        for (WebElement header : headers) {
+            String headerText = header.getText();
+            System.out.println(headerText);
+        }
+    }
+    @Test
+    @DisplayName("Wyszukiwanie GOPS Gnojnik")
+    public void elementH3Finder(){
+        driver.get("https://rjps.mrips.gov.pl/RJPS/WJ/start.do?podkategorie=21&stronaListy=1&sortowanie=0&liczbaPozycjiLista=20&wersja=1&widocznyPanel=lista");
+        List<WebElement> headers = driver.findElements(By.tagName("h3"));
+        boolean found = headers.stream().anyMatch(header -> header.getText().equals("GOPS Gnojnik"));
+        assertTrue(found, "GOPS Gnojnik nie został znaleziony");
+        }
 
 //    @AfterEach
 //    public void tearDown(){
