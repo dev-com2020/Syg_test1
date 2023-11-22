@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -36,14 +37,15 @@ public class ChromeTest {
 
         Map<String, Object> mobileEmulation = new HashMap<>();
         mobileEmulation.put("deviceMetrics", deviceMetrics);
-        mobileEmulation.put("userAgent", "Mozilla/5.0 (Linux; Android 8.0.0;" +
-                "Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) " +
-                "Chrome/67.0.3396.99 Mobile Safari/537.36");
+        mobileEmulation.put("userAgent", "Mozilla/5.0 " +
+                "(iPhone14,3; U; CPU iPhone OS 15_0 like Mac OS X) " +
+                "AppleWebKit/602.1.50 (KHTML, like Gecko) " +
+                "Version/10.0 Mobile/19A346 Safari/602.1");
 
 
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.setHeadless(false);
-        chromeOptions.setExperimentalOption("mobileEmulation",mobileEmulation);
+        chromeOptions.setHeadless(true);
+//        chromeOptions.setExperimentalOption("mobileEmulation",mobileEmulation);
 
         driver = new ChromeDriver(chromeOptions);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -60,12 +62,23 @@ public class ChromeTest {
 //        WebElement cookie = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='stopkaCookiePolicy']/div/div[2]/div[1]/span")));
         cookie.click();
         wyszSczegolowe.click();
+        Thread.sleep(2);
         File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
         try {
             FileUtils.copyFile(scrFile, new File("src/main/resources/screen1.jpg"));
         } catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+
+    @Test
+    public void linksTest(){
+        driver.get("https://rjps.mrips.gov.pl/RJPS/WJ/start.do?wersja=1");
+        List<WebElement> links = driver.findElements(By.tagName("a"));
+        System.out.println("Total links: " + links.size());
+        long count = links.stream().filter(WebElement::isDisplayed).count();
+        System.out.println("Total link visible: " + count);
     }
 
 //    @AfterEach
