@@ -52,28 +52,18 @@ public class Maps {
     }
 
     @Test
-    void goMaps() throws InterruptedException {
+    void goMaps() {
         driver.get("https://rjps.mrips.gov.pl/RJPS/WJ/start.do?stronaListy=1&liczbaPozycjiLista=20&wersja=1&widocznyPanel=mapa");
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("loaderId")));
-        WebElement cookie = driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div[1]/span"));
+        WebElement cookie = driver.findElement(By.xpath("//*[@id='stopkaCookiePolicy']/div/div[2]/div[1]/span"));
         cookie.click();
-        WebElement szukaj = driver.findElement(By.id("miejscowosc"));
-        szukaj.sendKeys("Kraków, małopolskie");
-        Thread.sleep(2000);
-        szukaj.sendKeys(Keys.ENTER);
-        WebElement mapa = driver.findElement(By.xpath("//*[@id='mapaRoot']"));
-        Point loc = mapa.getLocation();
-        int x = loc.getX();
-        int y = loc.getY();
-        System.out.println("X: " + x + "Y: " + y);
-        Thread.sleep(2000);
+        WebElement input = driver.findElement(By.id("miejscowosc"));
+        input.sendKeys("Kraków, małopolskie");
+        input.sendKeys(Keys.ENTER);
+        WebElement map = driver.findElement(By.className("mapa"));
         Actions actions = new Actions(driver);
-        int xOff = 1;
-        int yOff = 1;
-        actions.moveToElement(mapa, xOff, yOff).build().perform();
+        actions.moveToElement(map).build().perform();
         actions.contextClick().perform();
-
     }
-
 }
