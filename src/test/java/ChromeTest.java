@@ -46,7 +46,7 @@ public class ChromeTest {
 
 
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.setHeadless(true);
+        chromeOptions.setHeadless(false);
 //        chromeOptions.setExperimentalOption("mobileEmulation",mobileEmulation);
 
         driver = new ChromeDriver(chromeOptions);
@@ -58,19 +58,24 @@ public class ChromeTest {
     @Test
     void search() throws InterruptedException {
         driver.get("https://rjps.mrips.gov.pl/RJPS/WJ/start.do?wersja=1");
-        WebElement wyszSczegolowe = driver.findElement(By.className("wyszukiwanie-szczegolowe"));
         WebElement cookie = driver.findElement(By.xpath("//*[@id='stopkaCookiePolicy']/div/div[2]/div[1]/span"));
+        cookie.click();
+        WebElement wyszSczegolowe = driver.findElement(By.className("wyszukiwanie-szczegolowe"));
+        wyszSczegolowe.click();
+        WebElement checkbox = driver.findElement(By.id("label-4-21"));
+        checkbox.click();
+        WebElement szukaj = driver.findElement(By.xpath("//*[@id='podkategorie']/div[3]/button[2]"));
+        szukaj.click();
 //        WebDriverWait wait = new WebDriverWait(driver, 10);
 //        WebElement cookie = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='stopkaCookiePolicy']/div/div[2]/div[1]/span")));
-        cookie.click();
-        wyszSczegolowe.click();
-        Thread.sleep(2);
-        File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-        try {
-            FileUtils.copyFile(scrFile, new File("src/main/resources/screen1.jpg"));
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+
+//        Thread.sleep(2);
+//        File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+//        try {
+//            FileUtils.copyFile(scrFile, new File("src/main/resources/screen1.jpg"));
+//        } catch (IOException e){
+//            e.printStackTrace();
+//        }
     }
 
 
