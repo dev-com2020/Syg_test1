@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -29,15 +30,16 @@ public class ChromeTest {
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.setHeadless(true);
         driver = new ChromeDriver(chromeOptions);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @Test
     void search() throws InterruptedException {
         driver.get("https://rjps.mrips.gov.pl/RJPS/WJ/start.do?wersja=1");
         WebElement wyszSczegolowe = driver.findElement(By.className("wyszukiwanie-szczegolowe"));
-//        WebElement cookie = driver.findElement(By.xpath("//*[@id='stopkaCookiePolicy']/div/div[2]/div[1]/span"));
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement cookie = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='stopkaCookiePolicy']/div/div[2]/div[1]/span")));
+        WebElement cookie = driver.findElement(By.xpath("//*[@id='stopkaCookiePolicy']/div/div[2]/div[1]/span"));
+//        WebDriverWait wait = new WebDriverWait(driver, 10);
+//        WebElement cookie = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='stopkaCookiePolicy']/div/div[2]/div[1]/span")));
         cookie.click();
         wyszSczegolowe.click();
         File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
