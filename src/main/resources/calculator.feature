@@ -11,6 +11,7 @@ Feature: Basic Calculator
     When I add <a> and <b>
     Then the result is <c>
     Examples:
-    | a | b | c  |
-    | 1 | 2 | 3  |
-    | 3 | 7 | 10 |
+    | a  | b | c  |
+    | 1  | 2 | 3  |
+    | 3  | 7 | 10 |
+    | 10 | 2 | 12 |
