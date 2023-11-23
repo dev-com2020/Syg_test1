@@ -7,8 +7,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
@@ -24,15 +22,18 @@ public class GoogleSearchSteps {
         driver.get("http://demo-store.seleniumacademy.com/");
     }
 
+
     @When("Enter search term {string}")
     public void enterSearchTerm(String arg0) {
         WebElement search = driver.findElement(By.name("q"));
-        search.sendKeys("Pillow");
+        search.sendKeys(arg0);
         search.sendKeys(Keys.ENTER);
+
     }
 
-    @Then("Verify the search results are displayed")
-    public void verifyTheSearchResultsAreDisplayed() {
-        assertEquals("SEARCH RESULTS FOR 'PILLOW'",driver.findElement(By.className("page-title")).getText());
+    @Then("Verify the search results are {string}")
+    public void verifyTheSearchResultsAre(String arg0) {
+        assertTrue(arg0.toUpperCase(),driver.findElement(By.className("page-title")).getText().contains(arg0.toUpperCase()));
     }
+
 }
