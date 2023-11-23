@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CalculatorSteps {
     private Calculator calc;
+    private int result;
 
     @Given("a calculator I just turned on")
     public void setup() {
@@ -19,15 +20,15 @@ public class CalculatorSteps {
         calc.push("+");
     }
 
-    @When("I substract {int} to {int}")
-    public void substract(int arg1, int arg2) {
-        calc.push(arg1);
-        calc.push(arg2);
-        calc.push("-");
+    @Then("the result is {int}")
+    public void theResultIs(double expectedResult) {
+        assertEquals(expectedResult, calc.value());
     }
 
-    @Then("Then result is {int}")
-    public void the_result_is(double expected) {
-        assertEquals(expected, calc.value());
+    @When("I substract {int} and {int}")
+    public void iSubstractAnd(int arg0, int arg1) {
+        calc.push(arg0);
+        calc.push(arg1);
+        calc.push("-");
     }
 }
