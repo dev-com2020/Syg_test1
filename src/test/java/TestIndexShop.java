@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-//import pages.Index;
+import pages.Index;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +15,8 @@ public class TestIndexShop {
 
     WebDriver driver;
     ChromeOptions chromeOptions;
+
+    Index index;
 
 
     @BeforeAll
@@ -32,15 +34,15 @@ public class TestIndexShop {
         chromeOptions.setExperimentalOption("prefs",prefs);
 
         driver = new ChromeDriver(chromeOptions);
-//        index = new Index(driver);
+        index = new Index(driver);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("http://demo-store.seleniumacademy.com/");
     }
 
-//    @Test
-//    void contact(){
-//        index.clickContactUsLink();
-//        System.out.println("Strona wyświetlona to: " + index.getHeading());
-//    }
+    @Test
+    void contact(){
+        index.clickContact();
+        System.out.println("Strona wyświetlona to: " + index.getHeading());
+    }
 
 }

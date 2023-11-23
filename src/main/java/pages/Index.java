@@ -2,7 +2,7 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+
 
 public class Index {
     WebDriver driver;
@@ -14,5 +14,10 @@ public class Index {
 
     public void clickContact(){
         driver.findElement(contact).click();
+    }
+
+    public String getHeading() {
+        return driver.getTitle();
+
     }
 }
